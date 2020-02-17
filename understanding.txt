@@ -1,0 +1,60 @@
+so there are four types of defects
+each defect can be present at multiple not contiguous locations
+defects of same type must be encoded into a single string
+so four strings for four images
+
+an image can have 0,1 or multiple defects.
+
+
+current:
+ see how to work with developer install, so that i can add set_trace in origin src
+ get the def 3 data set ready
+ working on generate_a_dataloader.ipynb
+ 
+ 
+ current:
+ ok, now im creating an all zero maks and += ing preds to it,
+ this giving errors live making a pixel value = 5,
+ so classify pixel by pixel into one class to generate predictions.
+ 
+ generate a dataloader has predictions to files
+ encode preds has files to rle
+ 
+ 
+ crazing = like pingali objects crack all over body. wiki article has image
+ pitting = small small holes in an area
+ 
+ steel defect data set http://faculty.neu.edu.cn/yunhyan/NEU_surface_defect_database.html
+ 
+ 
+ msft video
+ use different unets for different classes
+ aroung 56 mins using pixel wise weight map for loss func modification, to compensate for freqency of pixels
+ deform data aug insted of rot, flip etc.
+ how big can the train images be, at what point you have to crop, predict and combine.
+ 
+ observations:
+ all 3 channels are basically same.
+ 
+ background colors of images are different,
+ during prediction the interaction between new copied patches and its sourroundings are causing spurious predictions, we need more context i.e, background.
+ also using current mixup due to overlap dataset is very small.
+ 
+ new mixup algo:
+ 	1) get bounding boxes of defects in images.
+ 	2) if images has multiple types of defects one box for each defect.
+ 	3) the bounding box should cover one logical defect, i.e, if the defect is in multiple 		places in the image, the bounding box shuld contain all defects that are close together
+ 	and does not contain any other type of defects.
+ 	4) i.e, the bounding box should cover a same defect cluster such that the defects are 		close together and does not contain any other type of defect, even if same defect is 		available at different place in the image it should be put into a new cluster because 		it is too far from the initial cluseter or there is a different defect cluster in 		between this cluster and prev one of same type.
+ 	5) extract meta data, i.e, image to cluster property maps.
+ 	6) essesntial properties are 
+ 		1-how many defect clusters in the image.
+ 		2-WxH of all clusters.
+ 		3-defect type of each cluster.
+ 		4-
+ 	7) get one more box aroung these bounding box, with properties
+ 		1- height should be maximum possible, i.e, touching top and bottom edges of the 		image, or expand till other defect if a different defects bounding box obstucts 		the expansion.
+ 		
+ 
+ new simple algo:
+ 	
